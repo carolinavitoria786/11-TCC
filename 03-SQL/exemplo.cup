@@ -1,0 +1,44 @@
+import java_cup.runtime.*;
+
+/* 
+   parser code {: ... :}:
+   Permite incluir um método main() diretamente dentro da 
+   classe do analisador sintático 
+*/
+
+parser code {:
+  public static void main(String[] args) throws Exception {
+    Compilador compilador = new Compilador();
+    compilador.compilar(args[0]);
+  }
+:}
+
+
+terminal SELECT, FROM, WHERE, VIRG, PTVIRG, IGUAL, PONTO;
+terminal String ID;
+
+non terminal comando, lista_colunas, lista_tabelas, condicoes, condicao, identificador_qualificado;
+
+start with comando;
+
+comando ::= SELECT lista_colunas FROM lista_tabelas WHERE condicoes PTVIRG
+          ;
+
+lista_colunas ::= identificador_qualificado
+                | identificador_qualificado VIRG lista_colunas
+                ;
+
+lista_tabelas ::= identificador_qualificado
+                | identificador_qualificado VIRG lista_tabelas
+                ;
+
+condicoes ::= condicao
+            | condicao VIRG condicoes
+            ;
+
+condicao ::= identificador_qualificado IGUAL identificador_qualificado
+           ;
+
+identificador_qualificado ::= ID
+                            | ID PONTO ID
+                            ;

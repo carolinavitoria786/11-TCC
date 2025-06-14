@@ -1,0 +1,6 @@
+{
+  "id": "1",
+  "celular": "99563458297",
+  "nome": "Gustavo",
+  "disciplinas": ["Compiladores", "Inteligência artificial", "Algoritmos"]
+}

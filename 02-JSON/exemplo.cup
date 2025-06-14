@@ -1,0 +1,53 @@
+import java_cup.runtime.*;
+
+/* 
+   parser code {: ... :}:
+   Permite incluir um método main() diretamente dentro da 
+   classe do analisador sintático 
+*/
+
+parser code {:
+  public static void main(String[] args) throws Exception {
+    Compilador compilador = new Compilador();
+    compilador.compilar(args[0]);
+  }
+:}
+
+/* tokens reconhecidos pelo analisador lexico 
+
+terminal ESQCHAVE, DIRCHAVE, ESQCOLCH, DIRCOLCH, DOISPON, VIRG;
+terminal String STRING;
+terminal Integer NUMBERO;
+
+// estruturas gramaticais
+non terminal json, objeto, membros, par, valor, array, elementos;
+
+start with json; /* Começa com json */
+
+json ::= objeto
+       ;
+
+objeto ::= ESQCHAVE membros DIRCHAVE
+         | ESQCHAVE DIRCHAVE   /* objeto vazio {} */
+         ;
+
+membros ::= par 
+          | par VIRG membros /* VIRG é , */
+          ;
+
+par ::= STRING DOISPON valor /* DOISPON é : */
+      ;
+
+valor ::= STRING
+        | NUMBERO
+        | objeto
+        | array
+        ;
+
+array ::= ESQCOLCH elementos DIRCOLCH
+        | ESQCOLCH DIRCOLCH  // array vazio
+        ;
+
+elementos ::= valor
+            | valor VIRG elementos
+            ;
